@@ -60,7 +60,7 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     console.log(emails);
-  })
+    })
 }
 
   
