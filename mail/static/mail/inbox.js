@@ -55,12 +55,22 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
-  //Making the API request
+  //Making the API request and rendering each email
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
+    emails.forEach(renderEmail)
     })
+  
+  //Function that handles the rendering of emails
+  function renderEmail(email) {
+    var div = document.createElement('div');
+    div.className = 'border border-secondary'
+    div.style = 'margin-top: 0.5rem;'
+    div.innerHTML = `<h1>${email.sender}</h1>
+    <p>${email.body}`
+    document.body.appendChild(div)
+  }
 }
 
   
