@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(result => {
       console.log(result);
     });
+    load_mailbox('sent');
   }
 
   
-
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
@@ -48,17 +48,25 @@ function compose_email() {
 
 function load_mailbox(mailbox) {
 
-  // Show the mailbox and hide other views
+  //Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
-  // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
-  //Making the API request and rendering each email
+  //Making the API request, clearing out the mailbox and rendering each email
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
+
+    //Clears the emails-view div to set it with new data
+    document.getElementById('emails-view').innerHTML = ''
+
+    // Show the mailbox name
+    var mailbox_name = document.createElement('h3')
+    mailbox_name.innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+    document.getElementById('emails-view').appendChild(mailbox_name)
+
+    //Rendering each email
     emails.forEach(renderEmail)
     })
   
@@ -69,7 +77,7 @@ function load_mailbox(mailbox) {
     div.style = 'margin-top: 0.5rem;'
     div.innerHTML = `<h1>${email.sender}</h1>
     <p>${email.body}`
-    document.body.appendChild(div)
+    document.getElementById('emails-view').appendChild(div)
   }
 }
 
