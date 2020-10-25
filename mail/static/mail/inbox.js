@@ -89,7 +89,6 @@ function load_mailbox(mailbox) {
     
     div.innerHTML = `<h3>From: ${email.sender}</h3>
     <h5>${email.subject}</h5>
-    <p>${email.body}</p>
     <p class='timestamp-paragraph' style='margin-left: 93%; margin-bottom:0%; font-size: 0.7rem;'>${email.timestamp}</p>`
     
     document.getElementById('emails-view').appendChild(div)
