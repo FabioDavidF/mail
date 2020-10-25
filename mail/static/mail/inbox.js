@@ -19,8 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(result => {
       console.log(result);
+      load_mailbox('sent');
     });
-    load_mailbox('sent');
+
+    //Preventing the form to do its natural submit action, which is to load the url again
+    return false;
   }
 
   
@@ -63,6 +66,7 @@ function load_mailbox(mailbox) {
 
     // Show the mailbox name
     var mailbox_name = document.createElement('h3')
+    mailbox_name.style = 'margin: 1rem;'
     mailbox_name.innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
     document.getElementById('emails-view').appendChild(mailbox_name)
 
@@ -73,10 +77,21 @@ function load_mailbox(mailbox) {
   //Function that handles the rendering of emails
   function renderEmail(email) {
     var div = document.createElement('div');
+
+    //Sets the background color to gray if the email is read
+    if (email.read == true) {
+      div.style = 'margin: 1rem; padding: 0.5rem; background-color: #b5b4b1'
+    } else {
+      div.style = 'margin: 1rem; padding: 0.5rem;'
+    }
+
     div.className = 'border border-secondary'
-    div.style = 'margin-top: 0.5rem;'
-    div.innerHTML = `<h1>${email.sender}</h1>
-    <p>${email.body}`
+    
+    div.innerHTML = `<h3>From: ${email.sender}</h3>
+    <h5>${email.subject}</h5>
+    <p>${email.body}</p>
+    <p class='timestamp-paragraph' style='margin-left: 93%; margin-bottom:0%; font-size: 0.7rem;'>${email.timestamp}</p>`
+    
     document.getElementById('emails-view').appendChild(div)
   }
 }
