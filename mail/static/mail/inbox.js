@@ -25,14 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
     //Preventing the form to do its natural submit action, which is to load the url again
     return false;
   }
-
-  
+ 
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
-
+  
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -49,12 +48,17 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+//Function that is triggered when email div is clicked, shows email view
+function viewEmail(email_id) {
+  //Make this function tomorrow
+  alert(email_id)
+}
+
 function load_mailbox(mailbox) {
 
   //Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
-
 
   //Making the API request, clearing out the mailbox and rendering each email
   fetch(`/emails/${mailbox}`)
@@ -85,16 +89,14 @@ function load_mailbox(mailbox) {
       div.style = 'margin: 1rem; padding: 0.5rem;'
     }
 
-    div.className = 'border border-secondary'
-    
-    div.innerHTML = `<h3>From: ${email.sender}</h3>
+    div.className = ' email-div border border-secondary rounded'   
+    div.innerHTML = `<a class='anchor-${email.id}' href='#' style='text-decoration: none; color: inherit;' onclick= ' viewEmail(${email.id});'><h3>From: ${email.sender}</h3>
     <h5>${email.subject}</h5>
-    <p class='timestamp-paragraph' style='margin-left: 93%; margin-bottom:0%; font-size: 0.7rem;'>${email.timestamp}</p>`
-    
+    <p class='timestamp-paragraph' style='margin-left: 93%; margin-bottom:0%; font-size: 0.7rem;'>${email.timestamp}</p></a>`
+
     document.getElementById('emails-view').appendChild(div)
+    
   }
+
 }
-
-  
-
 
