@@ -216,5 +216,4 @@ function reply(email_id) {
     document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: "${email.body}"`;
   })
 }
-
-    
+ 
