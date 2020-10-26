@@ -40,6 +40,7 @@ function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -50,14 +51,41 @@ function compose_email() {
 
 //Function that is triggered when email div is clicked, shows email view
 function viewEmail(email_id) {
-  //Make this function tomorrow
-  alert(email_id)
+
+  //Clearing out other views and showing email view
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
+
+
+  //API Request to fetch the email info
+  fetch(`/emails/${email_id}`)
+  //Turning the response into a javascript object file
+  .then(response => response.json())
+  //Getting the data into the html elements
+  .then(email => {
+    document.querySelector('#email-view-sender').innerHTML = `From: ${email.sender}`
+    document.querySelector('#email-view-recipients').innerHTML = `To: ${email.recipients}`
+    document.querySelector('#email-view-subject').innerHTML = `Subject: ${email.subject}`
+    document.querySelector('#email-view-body').innerHTML = `"${email.body}"`
+    document.querySelector('#email-view-timestamp').innerHTML = email.timestamp
+
+    //Marking the email as read
+    fetch(`/emails/${email_id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        read: true
+      })
+    })
+  })
+  
 }
 
 function load_mailbox(mailbox) {
 
   //Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
   //Making the API request, clearing out the mailbox and rendering each email
@@ -89,6 +117,8 @@ function load_mailbox(mailbox) {
       div.style = 'margin: 1rem; padding: 0.5rem;'
     }
 
+    //Jesus fucking christ why did I render info like this?
+    //it will break the whole function if I change it, so it will stay this way for now
     div.className = ' email-div border border-secondary rounded'   
     div.innerHTML = `<a class='anchor-${email.id}' href='#' style='text-decoration: none; color: inherit;' onclick= ' viewEmail(${email.id});'><h3>From: ${email.sender}</h3>
     <h5>${email.subject}</h5>

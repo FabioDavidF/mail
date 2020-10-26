@@ -30,12 +30,20 @@
         </form>
     </div>
 
-    <div id="emails-view">
+    <div id="emails-view" class='container'>
         <div class="border border-secondary">{{ user }}</div>
 
         <div id="emails-list">
             
         </div>
+    </div>
+
+    <div id="email-view" class='container'>
+        <h4 id="email-view-sender" class='row'></h4>
+        <h5 id="email-view-recipients" class="row"></h5>
+        <h6 id="email-view-subject" class='row'></h6>
+        <p id="email-view-body" style='margin-top: 1rem; margin-left: 1rem;' class='row'></p>
+        <p id="email-view-timestamp" class='row justify-content-end'></p>
     </div>
 {% endblock %}
 
